@@ -9,17 +9,35 @@
 
 #import "AppDelegate.h"
 
+// **********************************************
+// *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
+// **********************************************
+#import "RCCManager.h"
+
+// original headers
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
+  
+  /* original jsCodeLocation assignment */
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  
+  // **********************************************
+  // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****
+  // **********************************************
+  /*self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation];*/
 
+  
+  
+   // original RN bootstrap
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"TodoListApp"
                                                initialProperties:nil
@@ -31,6 +49,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+   
   return YES;
 }
 
