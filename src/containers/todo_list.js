@@ -7,7 +7,7 @@ export default class TodoList extends Component {
    }
 
    componentDidMount() {
-      this.unsubscribe = this.props.store.subscribe(() => { 
+      this.unsubscribe = this.props.store.subscribe(() => {
          this.forceUpdate();
       });
    }
@@ -30,6 +30,7 @@ export default class TodoList extends Component {
    _navigate(id) {
       this.props.navigator.push({
          name: 'TodoDetail',
+         title: 'Todo Item',
          props: {
             id: id
          }

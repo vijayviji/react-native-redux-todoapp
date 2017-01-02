@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
    mainContainer: {
-      flex: 4, 
-      flexDirection: 'column', 
+      flex: 4,
+      flexDirection: 'column',
       marginTop:100
    },
    leftNavButtonText: {
@@ -13,9 +13,10 @@ const styles = StyleSheet.create({
       color: '#bdc6cf'
    },
    rightNavButtonText: {
-      fontSize: 18,
-      marginRight:13,
-      marginTop:2
+      fontSize: 30,
+      marginRight:10,
+      marginTop:10,
+      color: '#adc6cf'
    },
    nav: {
       height: 65,
@@ -26,8 +27,8 @@ const styles = StyleSheet.create({
       fontSize:16
    },
    button: {
-      height:60, 
-      marginBottom:10, 
+      height:60,
+      marginBottom:10,
       backgroundColor: '#efefef',
       justifyContent: 'center',
       alignItems: 'center'

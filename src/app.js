@@ -3,6 +3,7 @@ import { Navigator, Text, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
 import TodoList from './containers/todo_list';
 import TodoItemDetail from './containers/todo_item_detail';
+import TodoAdd from './containers/todo_add';
 import styles from './styles/navbar';
 import { createStore, applyMiddleware } from 'redux';
 import createLogger from 'redux-logger';
@@ -36,6 +37,21 @@ _tmp.map(item => {
    store.dispatch(AddTodo(item.id, item.title, item.description));
 });
 
+const initialRoute = {
+   name: 'TodoList',
+   title: 'TODO LIST APP',
+   rightIcon: {
+      name: 'add',
+      onPress: (navigator) => {
+         navigator.push({
+            name: 'TodoAdd',
+            title: 'Add Todo'
+         });
+      }
+   },
+   state: store.getState()
+}
+
 export default class App extends Component {
    constructor(props) {
       super(props);
@@ -44,8 +60,9 @@ export default class App extends Component {
    _renderScene(route, navigator) {
       console.log('from _renderScene');
       console.log(store.getState());
+
       switch(route.name) {
-         case 'TodoList': 
+         case 'TodoList':
             return (
                <TodoList
                   navigator = { navigator }
@@ -60,21 +77,24 @@ export default class App extends Component {
                   store = { store }
                />
             )
+         case 'TodoAdd':
+            return (
+               <TodoAdd
+                  navigator={ navigator }
+                  store={ store }
+               />
+            )
       }
    }
 
    render() {
       return (
          <Navigator
-            initialRoute = {{
-               name: 'TodoList',
-               title: 'TODO LIST APP',
-               state: store.getState()
-            }}
+            initialRoute = { initialRoute }
             renderScene = { this._renderScene }
             navigationBar= {
                <Navigator.NavigationBar
-                  style= { styles.nav } 
+                  style= { styles.nav }
                   routeMapper= { this._navigationBarRouteMapper }
                />
             }
@@ -86,24 +106,30 @@ export default class App extends Component {
       LeftButton(route, navigator, index, navState) {
          if(index > 0) {
             return (
-
-               
-               <Icon 
+               <Icon
                   name='chevron-left'
                   iconStyle={styles.leftNavButtonText}
                   onPress={() => { if (index > 0) { navigator.pop() } }}
                />
             )
-         } 
+         }
          else {
             return null
          }
       },
       RightButton(route, navigator, index, navState) {
-         if (route.onPress) {
+         if (route.rightIcon) {
+            return (
+               <Icon
+                  name={route.rightIcon.name}
+                  iconStyle={styles.rightNavButtonText}
+                  onPress={ () => { route.rightIcon.onPress(navigator) }}
+               />
+            );
+         } else if (route.rightText) {
             return (
                <TouchableHighlight
-                  onPress={ () => route.onPress() }
+                  onPress={ () => { route.onPress() } }
                >
                   <Text style={ styles.rightNavButtonText }>
                      { route.rightText || 'Right Button' }

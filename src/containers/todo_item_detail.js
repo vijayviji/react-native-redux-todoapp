@@ -9,7 +9,7 @@ export default class TodoItemDetail extends Component {
    }
 
    componentDidMount() {
-      this.unsubscribe = this.props.store.subscribe(() => { 
+      this.unsubscribe = this.props.store.subscribe(() => {
          this.forceUpdate();
       });
    }
@@ -25,7 +25,6 @@ export default class TodoItemDetail extends Component {
          <TodoItemDetailComp
             todo = { todo }
             onMarkStateClicked = {() => {
-               console.log('From Mark State Clicked', todo);
                const next_todo_state = (todo.state === TodoStates.ACTIVE) ?
                                           TodoStates.COMPLETED :
                                           TodoStates.ACTIVE;
