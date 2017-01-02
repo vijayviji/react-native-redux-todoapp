@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
+import { TodoStates } from '../constants';
 
 export default class TodoList extends Component {
    constructor(props) {
@@ -8,29 +9,27 @@ export default class TodoList extends Component {
    }
 
    render() {
+      const todos = this.props.todos;
+
       return (
             <View style={{top: 40, flex: 1}}>
                <List>
                   {
-                     this.props.todo_list.map(item => (
+                     todos.map(item => (
                         <ListItem
                            key={ item.id }
                            title={ item.title }
-                           onPress = { () => { this._navigate(item) } }
+                           titleStyle={
+                              (item.state === TodoStates.COMPLETED) ?
+                                 { textDecorationLine: 'line-through', textDecorationStyle: 'solid'} :
+                                 {}
+                           }
+                           onPress = { () => { this.props.onItemClick(item.id) }}
                         />
                      ))
                   }
                </List>
             </View>
       );
-   }
-
-   _navigate(item) {
-      this.props.navigator.push({
-         name: 'TodoDetail',
-         props: {
-            todo_item: item
-         }
-      });
    }
 }

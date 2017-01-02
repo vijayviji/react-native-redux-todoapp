@@ -1,0 +1,30 @@
+Functional Requirements of App:
+===============================
+* Add todo items in the main todo list (This button should be on the nav bar) which should show a form in a new scene and entering ok should show main scene
+* Mark todo as completed (in a separate screen) (which will make todo as striked out in the main todo list)
+* Search todos (honors filter) (A top bar above main todo list which should change the list of main todo list based on search query. On empty, everything will be displayed)
+* Filter todos (completed, active, all - honors search query). This should be available in the side menu bar
+
+How state tree looks:
+=====================
+{
+   todos: [[Object] {
+      id: [Number],
+      title: [String], // This should appear in nav bar in the todo detailed view
+      description: [String],
+      state: any("COMPLETED", "ACTIVE")
+   }],
+   visibilityFilter: any("ALL", "COMPLETED", "ACTIVE"),
+   searchQuery: [String]
+}
+
+Actions:
+=======
+ADD_TODO
+   { id, title, description, state = any(COMPLETED, ACTIVE) }
+SET_SEARCH_QUERY
+   { q }
+MARK_TODO
+   { id, state = any(COMPLETED, ACTIVE) }
+SET_VISIBILITY_FILTER
+   { filter = any(ALL, COMPLETED, ACTIVE) }

@@ -1,22 +1,39 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Card, Button } from 'react-native-elements';
+import { TodoStates } from '../constants';
 
 export default class TodoItemDetail extends Component {
    constructor(props) {
       super(props);
-      console.log(props);
    }
 
    render() {
+      const todo = this.props.todo;
+      const btnTitle = 'Mark as ' + ((todo.state === TodoStates.ACTIVE) ?
+                                 TodoStates.COMPLETED :
+                                 TodoStates.ACTIVE);
       return (
          <Card
-            title={ this.props.todo_item.title }
+            title={ todo.title }
+            titleStyle={
+               (todo.state === TodoStates.COMPLETED) ?
+                  { textDecorationLine: 'line-through', textDecorationStyle: 'solid'} :
+                  {}
+            }
             containerStyle = {{
                top: 60
             }}
          >
-            <Text> { this.props.todo_item.description } </Text>
+            <Text
+               style = {
+                  (todo.state === TodoStates.COMPLETED) ?
+                     { textDecorationLine: 'line-through', textDecorationStyle: 'solid'} :
+                     {}
+               }
+            >
+               { todo.description }
+            </Text>
             <Button
                icon={{name: 'done'}}
                backgroundColor='#8BC052'
@@ -27,7 +44,9 @@ export default class TodoItemDetail extends Component {
                   marginRight: 0,
                   marginBottom: 0
                }}
-               title='Mark As Completed' />
+               title={ btnTitle }
+               onPress={ this.props.onMarkStateClicked }
+            />
          </Card>
       );
    }
