@@ -3,6 +3,12 @@ export const TodoStates = {
    COMPLETED: "COMPLETED",
 };
 
+export const SaveTodoStatus = {
+   SUCCESS: "SUCCESS",
+   ERROR: "ERROR",
+   INFLIGHT: "INFLIGHT"
+}
+
 export const FilterStates = {
    ALL: "ALL",
    ACTIVE: "ACTIVE",
@@ -12,6 +18,10 @@ export const FilterStates = {
 export const Actions = {
    ADD_TODO: 'ADD_TODO',
    MARK_TODO: 'MARK_TODO',
+   RESET_SAVE_TODO_STATUS: 'RESET_SAVE_TODO_STATUS',
+   SET_SAVE_TODO_ERR: 'SET_SAVE_TODO_ERR',
+   SET_SAVE_TODO_INFLIGHT: 'SET_SAVE_TODO_INFLIGHT',
+   SET_SAVE_TODO_SUCCESS: 'SET_SAVE_TODO_SUCCESS',
    SET_SEARCH_QUERY: 'SET_SEARCH_QUERY',
    SET_VISIBILITY_FILTER: 'SET_VISIBILITY_FILTER'
 };

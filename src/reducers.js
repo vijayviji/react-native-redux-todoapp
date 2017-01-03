@@ -1,5 +1,6 @@
 import { Actions, TodoStates, FilterStates } from './constants'
-import { Assert } from './utils'
+import { Assert } from './utils';
+import { SaveTodoStatus } from './constants';
 
 /**
  * NOTE: All Reducers have to be PURE functions. They shouldn't change UI, send requests to network, etc. Given a state
@@ -10,7 +11,8 @@ import { Assert } from './utils'
 const Root = (state = {}, action) => ({
    todos: todos(state.todos, action),
    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-   searchQuery: searchQuery(state.searchQuery, action)
+   searchQuery: searchQuery(state.searchQuery, action),
+   saveTodoStatus: saveTodoStatus(state.saveTodoStatus, action)
 });
 export default Root;
 
@@ -23,7 +25,7 @@ const todos = (state = [], action) => {
                id: action.id,
                title: action.title,
                description: action.description,
-               state: TodoStates.ACTIVE
+               state: action.state
             }
          ];
       case Actions.MARK_TODO:
@@ -46,6 +48,27 @@ const todos = (state = [], action) => {
          return state;
    }
 };
+
+const saveTodoStatus = (state = {}, action) => {
+   switch (action.type) {
+      case Actions.SET_SAVE_TODO_SUCCESS:
+         return {
+            state: SaveTodoStatus.SUCCESS,
+            context: action.id,
+            timestamp: action.timestamp
+         };
+      case Actions.SET_SAVE_TODO_ERR:
+         return {
+            state: SaveTodoStatus.ERROR,
+            context: action.err,
+            timestamp: action.timestamp
+         }
+      case Actions.RESET_SAVE_TODO_STATUS:
+         return {};
+      default:
+         return state;
+   }
+}
 
 const visibilityFilter = (state = FilterStates.ALL, action) => {
    switch(action.type) {

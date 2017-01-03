@@ -16,6 +16,11 @@ How state tree looks:
    }],
    visibilityFilter: any("ALL", "COMPLETED", "ACTIVE"),
    searchQuery: [String]
+   saveTodoStatus: {
+      state: any("SUCCESS", "ERROR", "INFLIGHT", null),
+      context: [String] // such as error msg on error, id of the new todo in case of success, etc
+      timestamp: UTC timestamp // So that to check whether the status is new one or old one
+   }
 }
 
 Actions:

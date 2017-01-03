@@ -1,14 +1,42 @@
 import { Actions, TodoStates, FilterStates } from './constants'
 import { Assert } from './utils'
 
-export const AddTodo = (id, title, description) => {
-   console.log('From AddTodo');
-   console.log(id, title, description);
-   return {  // using named params
+export const SetSaveTodoInflight = () => {
+   return {
+      type: Actions.SET_SAVE_TODO_INFLIGHT,
+      timestamp: Date.now()
+   };
+};
+
+export const SetSaveTodoSuccess = (id) => {
+   return {
+      type: Actions.SET_SAVE_TODO_SUCCESS,
+      id,
+      timestamp: Date.now()
+   };
+};
+
+export const SetSaveTodoErr = (err) => {
+   return {
+      type: Actions.SET_SAVE_TODO_ERR,
+      err,
+      timestamp: Date.now()
+   };
+};
+
+export const ResetSaveTodoStatus = () => {
+   return {
+      type: Actions.RESET_SAVE_TODO_STATUS
+   }
+}
+
+export const AddTodo = (id, title, description, state) => {
+   return {
       type: Actions.ADD_TODO,
-      id: id,
-      title: title,
-      description: description
+      id,
+      title,
+      description,
+      state
    }
 };
 
@@ -35,3 +63,19 @@ export const SetVisibilityFilter = (filter) => {
       filter:  [filter]
    };
 };
+
+export const SaveTodo = (firebaseDB, title, description) => dispatch => {
+   const todoRef = firebaseDB.ref('todos');
+
+   dispatch(SetSaveTodoInflight);
+
+   todoRef.push({
+      title,
+      description,
+      state: TodoStates.ACTIVE
+   }).then(todoRef => {
+      dispatch(SetSaveTodoSuccess(todoRef.key));
+   }, (err) => {
+      dispatch(SetSaveTodoErr(err));
+   });
+}

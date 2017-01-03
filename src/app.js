@@ -1,41 +1,35 @@
 import React, { Component } from 'react';
 import { Navigator, Text, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
+
 import TodoList from './containers/todo_list';
 import TodoItemDetail from './containers/todo_item_detail';
 import TodoAdd from './containers/todo_add';
+
 import styles from './styles/navbar';
+
 import { createStore, applyMiddleware } from 'redux';
+
 import createLogger from 'redux-logger';
+const loggerMiddleware = createLogger();
+
+import thunkMiddleware from 'redux-thunk';
+
 import RootReducer from './reducers';
 import { AddTodo } from './action_creators';
 
-const loggerMiddleware = createLogger();
+import DBSetup from './firebase_setup';
 
-const _tmp = [
-   {
-      id: 1,
-      title: "First",
-      description: "description for first"
-   },
-   {
-      id: 2,
-      title: "Second",
-      description: "description for second"
-   },
-   {
-      id: 3,
-      title: "Third",
-      description: "description for third"
-   }
-];
-
-const store = createStore(RootReducer, applyMiddleware(loggerMiddleware));
-
-_tmp.map(item => {
-   console.log(item);
-   store.dispatch(AddTodo(item.id, item.title, item.description));
-});
+// Store setup
+const store = createStore(
+   RootReducer,
+   applyMiddleware(
+      thunkMiddleware, // lets us dispatch() functions
+      loggerMiddleware // neat middleware that logs actions
+   )
+);
+// Firebase setup
+const firebaseDB = DBSetup(store);
 
 const initialRoute = {
    name: 'TodoList',
@@ -52,6 +46,7 @@ const initialRoute = {
    state: store.getState()
 }
 
+// App with navigation setup
 export default class App extends Component {
    constructor(props) {
       super(props);
@@ -82,6 +77,7 @@ export default class App extends Component {
                <TodoAdd
                   navigator={ navigator }
                   store={ store }
+                  firebaseDB= { firebaseDB }
                />
             )
       }

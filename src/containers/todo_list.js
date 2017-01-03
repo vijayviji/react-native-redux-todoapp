@@ -18,7 +18,7 @@ export default class TodoList extends Component {
 
    render() {
       const todos = this.props.store.getState().todos;
-
+      console.log('Rerendering TodoList Container')
       return (
          <TodoListComp
             todos = { todos }
